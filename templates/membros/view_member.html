@@ -1,0 +1,180 @@
+{% extends 'layout.html' %}
+{% block body %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/stylepdf.css">
+</head>
+<body>
+    <div class="container" >
+        <div class="border border-3 rounded border-black p-2 m-3" id="textforPDF">
+            
+            <div class="row">
+                <div class="col-3">
+                    <img src="{{url_for('static', filename='img/logo_ad.png')}}" alt="Logo">
+                 </div>
+                 <div class="col-7">
+                    <h3 class="text-center text-underline">Recadastramento do Rol de Membros</h3>
+                    <h5 class="text-left text-uppercase fst-italic"> Igreja Evangélica Assembléia de Deus</h5>
+                    <p class="font-italic"> Rua Conselheiro Cotegipe, 273 - Belém - São Paulo/SP </p>
+                 </div>
+                 <div class="col-2">
+                    <p>
+                        <img src="/{{ member_data[30] }}" alt="photo" width="120px" class="rounded mt-3">  
+                    </p>
+                 </div>
+            </div>
+            <div class="row mt-3">
+                
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <p>Nome: <span id="nomeMembro"> {{member_data[1]}} </span></p>
+                </div>
+                <div class="col-3">
+                    <p>Pai: {{member_data[2]}}</p>
+                </div>
+                <div class="col-3">
+                    <p>Mãe: {{member_data[3]}}</p>
+                </div>
+                <div class="col-3">
+                    <p> Data de Nascimento: {{member_data[4]}}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <p> Estado Civil: {{member_data[5]}}</p>
+                </div>
+                <div class="col-3">
+                    <p>CPF: {{member_data[6]}}</p>
+                </div>
+                <div class="col-3">
+                    <p>RG: {{member_data[7]}}</p>
+                </div>
+                
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <p>Setor Atual: {{member_data[8]}}</p>
+                </div>
+                <div class="col-3">
+                    <p>Igreja Atual: {{member_data[9]}}</p>
+                </div>
+                <div class="col-3">
+                    <p>Setor Anterior: {{member_data[10]}}</p>
+                </div>
+                <div class="col-3">
+                    <p>Igreja Anterior: {{member_data[11]}}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <p>Bat. Espírito Santo: {{member_data[12]}}</p>
+                </div>
+                <div class="col-3">
+                    <p>Batismo: {{member_data[15]}}</p>
+                </div>
+                <div class="col-3">
+                    <p>Data do Batismo: {{member_data[16]}}</p>
+                </div>
+                <div class="col-3">
+                    <p>Igreja de Batismo: {{member_data[17]}}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <p> Admitido por: {{member_data[18]}}</p>
+                </div>
+                <div class="col-3">
+                    <p> Data da Consagração: {{member_data[19]}}</p>
+                </div>
+                <div class="col-3">
+                    <p> Data da Apresentação: {{member_data[20]}}</p>
+                </div>
+                <div class="col-3">
+                    <p> Cargo/Função: {{member_data[21]}}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <p> Escolaridade: {{member_data[13]}}</p>
+                </div>
+                <div class="col-3">
+                    <p> Profissão: {{member_data[14]}}</p>
+                </div>
+                <div class="col-3">
+                    <p> Telefone: {{member_data[27]}}</p>
+                </div>
+                <div class="col-3">
+                    <p> Email: {{member_data[28]}}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <p>Endereço: {{ member_data[22]}} - {{ member_data[23]}} - {{ member_data[24]}} - {{ member_data[25]}} - {{ member_data[26]}}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <p> Com cartão de Membro: {{member_data[29]}}</p>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <button class="btn btn-outline-secondary" id="generator-pdf"> Gerar PDF</button>
+    <script src="/static/js/html2pdf.bundle.min.js"></script>
+    <script>
+        
+        //Criar uma função para gerar o PDF
+        function gerarPDF(){
+            // Selecione o elemento que contém o código HTML que deseja converter em PDF
+            const element = document.getElementById('textforPDF');
+
+            // Obter nome do arquivo
+            const nomeMembro = document.getElementById('nomeMembro').textContent;
+
+            // Define o nome do arquivo PDF usando o nome do membro
+            const nomeFile = 'Cadastro_' + nomeMembro.trim().replace(/\s+/g, '_') + '.pdf';
+
+            //Conversão para pdf
+            const options = {
+                    filename: nomeFile,
+                    image: { type: 'jpeg', quality:0.98},
+                    html2canvas:{scale: 2},
+                    jsPDF: {unit: 'mm', format: 'a4', orientation:'landscape'},
+                    pagebreak: {mode:['avoid-all'] },
+                    jsPDF:{
+                        format: 'a4',
+                        orientation: 'landscape',
+                        compressPDF: true,
+                        putOnlyUsedFonts: true,
+                        floatPrecision: 16,
+                        marginLeft: 10,
+                        marginRight: 10,
+                        marginTop: 10,
+                        marginBottom: 10,
+                        scaleFactor: 0.7,
+                        enableLinks: true,
+                        htmlContent: true,
+                        autoPaging: true,
+                        useCORS: true,
+                        metadata: {
+                        title: 'Arquivo PDF',
+                        author: 'IEAD - Inácio Monteiro - Setor 63',
+                        subject: 'Documento gerado em formato PDF',
+                    },
+                },
+            };
+            //Use a biblioteca html2pdf para converter o elemento em PDF
+            html2pdf().from(element).set(options).save();
+        }
+        // Adicionar um evento de clique ao botão 'Gerar PDF'
+        const button = document.getElementById('generator-pdf');
+        button.addEventListener('click', gerarPDF);
+    </script>
+</body>
+{% endblock %}
