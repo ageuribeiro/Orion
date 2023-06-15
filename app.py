@@ -19,6 +19,8 @@ users.append(object)
 app = Flask(__name__)
 
 app.config['UPLOAD_FOLDER'] = 'files'
+# secret key
+app.secret_key = os.urandom(16)
 
 # index
 @app.route("/")
