@@ -17,6 +17,7 @@ class User:
 users = []
 users.append(object)
 app = Flask(__name__)
+
 app.config['UPLOAD_FOLDER'] = 'files'
 
 # index
@@ -25,7 +26,6 @@ def index():
     return render_template("index.html")
 
 # login session 
-
 @app.route("/login", methods=["POST", "GET"])
 def login():
     if request.method == "POST":
