@@ -1,26 +1,79 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, send_from_directory, send_file
-import sqlite3 as sql
+from models import User, Member
+from forms import RegistrationFormMember
+from routes import register_member
+from flask_sqlalchemy import SQLAlchemy
+import firebase_admin
+from firebase_admin import credentials
 import pdfkit
 import datetime
 import os
 
-class User:
-    def __init__(self, id, nome, email, senha):
-        self.id = id
-        self.nome = nome
+
+# credenciais GCP
+cred = credentials.Certificate()
+# Configuração do Flask e do banco de dados
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:3306/AppOrion'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['UPLOAD_FOLDER'] = 'files'
+app.secret_key = os.urandom(16)
+
+db = SQLAlchemy(app)
+
+class User(db.Model):
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    senha = db.Column(db.String(80), nullable=False)
+    nome = db.Column(db.String(80), nullable=False)
+    def __init__(self, email, senha, nome):
         self.email = email
         self.senha = senha
-    
+        self.nome = nome
+
     def __repr__(self):
-        return f'<User: {self.nome}>'
+        return f'<User: {self.NOME}>'
+
+class Member(db.Model):
+    __tablename__ = 'members'
+    ID = db.Column(db.Integer, primary_key=True)
+    NOME = db.Column(db.String(255))
+    PAI = db.Column(db.String(255))
+    MAE = db.Column(db.String(255))
+    DATA_NASC = db.Column(db.String(255))
+    ESTADO_CIVIL = db.Column(db.String(255))
+    CPF = db.Column(db.String(255))
+    RG = db.Column(db.String(255))
+    SETOR_ATUAL = db.Column(db.String(255))
+    IGREJA_ATUAL = db.Column(db.String(255))
+    SETOR_ANTERIOR = db.Column(db.String(255))
+    IGREJA_ANTERIOR = db.Column(db.String(255))
+    BATIZADO_COM_ESPIRITO_SANTO = db.Column(db.String(255))
+    ESCOLARIDADE = db.Column(db.String(255))
+    PROFISSAO = db.Column(db.String(255))
+    BATIZADO_NAS_AGUAS = db.Column(db.String(255))
+    DATA_BATISMO_NAS_AGUAS = db.Column(db.String(255))
+    IGREJA_DE_BATISMO = db.Column(db.String(255))
+    ADMITIDO_POR = db.Column(db.String(255))
+    DATA_DA_CONSAGRACAO = db.Column(db.String(255))
+    DATA_DA_APRESENTACAO = db.Column(db.String(255))
+    CARGO_NA_IGREJA = db.Column(db.String(255))
+    ENDERECO = db.Column(db.String(255))
+    BAIRRO = db.Column(db.String(255))
+    CIDADE = db.Column(db.String(255))
+    ESTADO = db.Column(db.String(255))
+    CEP = db.Column(db.String(255))
+    TELEFONE = db.Column(db.String(255))
+    EMAIL = db.Column(db.String(255))
+    TEM_CARTAO_DE_MEMBRO = db.Column(db.String(255))
+    FOTO = db.Column(db.String(255))
+
+    def __repr__(self):
+        return f'<Member: {self.NOME}>'
 
 users = []
 users.append(object)
-app = Flask(__name__)
-
-app.config['UPLOAD_FOLDER'] = 'files'
-# secret key
-app.secret_key = os.urandom(16)
 
 # index
 @app.route("/")
@@ -33,11 +86,8 @@ def login():
     if request.method == "POST":
         email = request.form["email"]
         senha = request.form["senha"]
-        con = sql.connect("app_orion_database.db")
-        cur = con.cursor()
-        cur.execute("SELECT * FROM users WHERE EMAIL = ? AND SENHA = ?",(email, senha))
-        user = cur.fetchone()
-        con.close()
+        
+        user = User.query.filter_by(email=email, senha=senha).first()
 
         if user:
             session['user_id'] = user[0]
@@ -82,43 +132,47 @@ def add_user():
         nome = request.form["nome"]
         email = request.form["email"]
         senha = request.form["senha"]
-        con = sql.connect("app_orion_database.db")
-        cur = con.cursor()
-        cur.execute("insert into users(NOME,EMAIL,SENHA) values(?,?,?)",(nome, email, senha))
-        con.commit()
+
+        user = User(nome=nome, email=email, senha=senha)
+        db.session.add(user)
+        db.session.commit()
+        
         flash("Dados cadastrados com sucesso.","success")
         return redirect(url_for("list_user"))
-    user_id = session.get('user_id')
-    if user_id is None:
-        flash("Você precisa fazer login para acessar esta página.", "danger")
-        return redirect(url_for("add_user"))
-
-        
-    return render_template("usuarios/add_user.html", user_id = user_id)
-
-# editar usuario        
-@app.route("/edit_user/<string:id>", methods=["POST", "GET"])
-def edit_user(id):
-    if request.method=="POST":
-        nome = request.form["nome"]
-        email = request.form["email"]
-        senha = request.form["senha"]
-        con = sql.connect("app_orion_database.db")
-        cur=con.cursor()
-        cur.execute("update users set NOME = ?,EMAIL = ?, SENHA = ? WHERE ID=?",(nome,email,senha,id))
-        con.commit()
-        flash("Dados atualizados com sucesso","success")
-        return redirect(url_for("index"))
     
     user_id = session.get('user_id')
     if user_id is None:
         flash("Você precisa fazer login para acessar esta página.", "danger")
         return redirect(url_for("login"))
-    con=sql.connect("app_orion_database.db")
-    con.row_factory=sql.Row
-    cur=con.cursor()
-    cur.execute("select * from users where ID = ?",(id,))
-    data = cur.fetchone()
+
+    return render_template("usuarios/add_user.html", user_id = user_id)
+
+# editar usuario        
+@app.route("/edit_user/<int:id>", methods=["POST", "GET"])
+def edit_user(id):
+    
+    user_id = session.get('user_id')
+    if user_id is None:
+        flash("Você precisa fazer login para acessar esta página.", "danger")
+        return redirect(url_for("login"))
+    
+    user = User.query.get(id)
+
+    if request.method == "POST":
+        nome = request.form["nome"]
+        email = request.form["email"]
+        senha = request.form["senha"]
+
+
+        user.nome = nome
+        user.email = email
+        user.senha = senha
+
+        db.session.commit()
+    
+        flash("Dados atualizados com sucesso.", "success")
+        return redirect(url_for("index"))
+
     return render_template("edit_user.html", datas=data, user_id=user_id)
 
 # deletar usuario
@@ -349,5 +403,8 @@ def list_report():
     return render_template("membros/list_report.html", datas=data, user_id = user_id)
 
 if __name__=='__main__':
-    app.secret_key="admin123"
+    with app.app_context():
+
+        db.create_all()
+    
     app.run(debug=True)
