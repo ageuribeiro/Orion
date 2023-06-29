@@ -1,109 +1,110 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session, send_from_directory, send_file
-from models import User, Member
-from forms import RegistrationFormMember
-from routes import register_member
-from flask_sqlalchemy import SQLAlchemy
-import firebase_admin
-from firebase_admin import credentials
-import pdfkit
-import datetime
-import os
+from flask import Flask, render_template, request, redirect, flash, url_for, session
+from firebase_admin import auth
+import requests, json, pdfkit, datetime, os, firebase_admin, pyrebase
 
+firebase_admin.initialize_app()
 
-# credenciais GCP
-cred = credentials.Certificate()
-# Configuração do Flask e do banco de dados
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:3306/AppOrion'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['UPLOAD_FOLDER'] = 'files'
-app.secret_key = os.urandom(16)
 
-db = SQLAlchemy(app)
 
-class User(db.Model):
-    __tablename__ = 'users'
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    senha = db.Column(db.String(80), nullable=False)
-    nome = db.Column(db.String(80), nullable=False)
-    def __init__(self, email, senha, nome):
-        self.email = email
-        self.senha = senha
-        self.nome = nome
+config ={
+    'apiKey': "AIzaSyCuATOltNI_Vxu_ucfzXPNmN2V1puvqABU",
+    'authDomain': "appweb-orion-php.firebaseapp.com",
+    'databaseURL': "https://appweb-orion-php-default-rtdb.firebaseio.com",
+    'projectId': "appweb-orion-php",
+    'storageBucket': "appweb-orion-php.appspot.com",
+    'messagingSenderId': "365589111987",
+    'appId': "1:365589111987:web:cc51e2470cbe43ec40fcc6"
+}
 
-    def __repr__(self):
-        return f'<User: {self.NOME}>'
+firebase = pyrebase.initialize_app(config)
+auth = firebase.auth()
 
-class Member(db.Model):
-    __tablename__ = 'members'
-    ID = db.Column(db.Integer, primary_key=True)
-    NOME = db.Column(db.String(255))
-    PAI = db.Column(db.String(255))
-    MAE = db.Column(db.String(255))
-    DATA_NASC = db.Column(db.String(255))
-    ESTADO_CIVIL = db.Column(db.String(255))
-    CPF = db.Column(db.String(255))
-    RG = db.Column(db.String(255))
-    SETOR_ATUAL = db.Column(db.String(255))
-    IGREJA_ATUAL = db.Column(db.String(255))
-    SETOR_ANTERIOR = db.Column(db.String(255))
-    IGREJA_ANTERIOR = db.Column(db.String(255))
-    BATIZADO_COM_ESPIRITO_SANTO = db.Column(db.String(255))
-    ESCOLARIDADE = db.Column(db.String(255))
-    PROFISSAO = db.Column(db.String(255))
-    BATIZADO_NAS_AGUAS = db.Column(db.String(255))
-    DATA_BATISMO_NAS_AGUAS = db.Column(db.String(255))
-    IGREJA_DE_BATISMO = db.Column(db.String(255))
-    ADMITIDO_POR = db.Column(db.String(255))
-    DATA_DA_CONSAGRACAO = db.Column(db.String(255))
-    DATA_DA_APRESENTACAO = db.Column(db.String(255))
-    CARGO_NA_IGREJA = db.Column(db.String(255))
-    ENDERECO = db.Column(db.String(255))
-    BAIRRO = db.Column(db.String(255))
-    CIDADE = db.Column(db.String(255))
-    ESTADO = db.Column(db.String(255))
-    CEP = db.Column(db.String(255))
-    TELEFONE = db.Column(db.String(255))
-    EMAIL = db.Column(db.String(255))
-    TEM_CARTAO_DE_MEMBRO = db.Column(db.String(255))
-    FOTO = db.Column(db.String(255))
+app.secret_key = 'secret'
 
-    def __repr__(self):
-        return f'<Member: {self.NOME}>'
+# URL do banco de dados do firebase
+firebase_url = "https://appweb-orion-php-default-rtdb.firebaseio.com/"
 
-users = []
-users.append(object)
+member_dados = {
+  "id": 0,
+  "nome": "null",
+  "pai": "null",
+  "mae": "null",
+  "data_nasc": "null",
+  "estado_civil": "null",
+  "cpf": "null",
+  "rg": "null",
+  "setor_atual": "null",
+  "igreja_atual": "null",
+  "setor_anterior": "null",
+  "igreja_anterior": "null",
+  "batizado_com_espirito_santo": "null",
+  "escolaridade": "null",
+  "profissao": "null",
+  "batizado_nas_aguas": "null",
+  "data_batismo_nas_aguas": "null",
+  "igreja_de_batismo": "null",
+  "admitido_por": "null",
+  "data_da_consagracao": "null",
+  "data_da_apresentacao": "null",
+  "cargo_na_igreja": "null",
+  "endereco": "null",
+  "bairro": "null",
+  "cidade": "null",
+  "estado": "null",
+  "cep": "null",
+  "telefone": "null",
+  "email": "null",
+  "tem_cartao_de_membro": "null",
+  "foto": "null"
+}
+
+# criar membro
+req_create_member = requests.post(f'{firebase_url}/membros/.json', data = json.dumps(member_dados))
 
 # index
 @app.route("/")
 def index():
-    return render_template("index.html")
+    
+    # Obter todos os usuarios do firebase
+    response = requests.get(f'{firebase_url}/usuarios.json')
+    users = response.json() if response.ok else {}
+    return render_template("index.html", users=users)
+
+# ======================== Login ==============================================================================
 
 # login session 
 @app.route("/login", methods=["POST", "GET"])
 def login():
-    if request.method == "POST":
-        email = request.form["email"]
-        senha = request.form["senha"]
-        
-        user = User.query.filter_by(email=email, senha=senha).first()
+    if('user' in session):
+        return 'Hi, {}'.format(session['user'])
 
-        if user:
-            session['user_id'] = user[0]
+    if request.method == "POST":
+        email = request.form.get("email")
+        password = request.form.get("password")
+        
+        try:
+            # Autentique o usuário com o Firebase Authentication
+            user = auth.sign_in_with_email_and_password(email, password)
+            session['user'] = email
+
             flash("Login realizado com sucesso.","success")
             return redirect(url_for("list_member"))
     
-        else:
-            flash("Credenciais inválidas. Tente novamente.", "danger")
+        except:
+            # Trate os erros de autenticação do Firebase
+            flash("Failed to login. Try again later.", "danger")
+
     return render_template("index.html")
 
 # logout session    
 @app.route("/logout")
 def logout():
-    session.pop('user_id',None)
-    flash("Logout realizado com sucesso.", "success")
+    session.pop('user')
     return redirect(url_for("index"))
+
+# ======================== Usuarios ==============================================================================
 
 # listar usuarios
 @app.route("/list_user")
@@ -119,11 +120,7 @@ def list_user():
         flash("Você precisa fazer login para acessar esta página.", "danger")
         return redirect(url_for("login"))
 
-    return render_template("usuarios/list_user.html", datas=data, user_id = user_id)
-
-@app.route("/register_user")
-def register_user():
-    return render_template('usuarios/add_user.html')
+    return render_template("usuarios/read.html", datas=data, user_id = user_id)
 
 # adicionar usuario
 @app.route("/add_user", methods=["POST", "GET"])
@@ -131,77 +128,76 @@ def add_user():
     if request.method == "POST":
         nome = request.form["nome"]
         email = request.form["email"]
+        usuario =request.form["usuario"]
         senha = request.form["senha"]
 
-        user = User(nome=nome, email=email, senha=senha)
-        db.session.add(user)
-        db.session.commit()
-        
-        flash("Dados cadastrados com sucesso.","success")
-        return redirect(url_for("list_user"))
-    
-    user_id = session.get('user_id')
-    if user_id is None:
-        flash("Você precisa fazer login para acessar esta página.", "danger")
-        return redirect(url_for("login"))
+        # Criar o objeto de usuario
+        user_data = {
+            "nome":nome, 
+            "email":email, 
+            "senha":senha
+            }
+        # Enviar a requisição POST para criar o usuario no Firebase
+        response = requests.post(f'{firebase_url}/usuarios.json', json=user_data)
 
-    return render_template("usuarios/add_user.html", user_id = user_id)
+        if response.ok:
+            
+            return redirect(url_for('index'))
+            flash("Dados cadastrados com sucesso.","success")
+        else:
+            return "Erro ao criar novo usuario."
+    return render_template("usuarios/read.html")
 
 # editar usuario        
-@app.route("/edit_user/<int:id>", methods=["POST", "GET"])
-def edit_user(id):
+@app.route("/edit_user/<string:user_id>", methods=["POST", "GET"])
+def edit_user(user_id):
     
-    user_id = session.get('user_id')
-    if user_id is None:
-        flash("Você precisa fazer login para acessar esta página.", "danger")
-        return redirect(url_for("login"))
-    
-    user = User.query.get(id)
+    response = requests.get(f'{firebase_url}/usuarios/{user_id}.json')
+    user_data = response.json() if response.ok else {}
 
     if request.method == "POST":
+        # Obter os dados do formulario
         nome = request.form["nome"]
         email = request.form["email"]
+        usuario =request.form["usuario"]
         senha = request.form["senha"]
 
 
-        user.nome = nome
-        user.email = email
-        user.senha = senha
+        # Atualizar os dados do  usuario
+        user_data["nome"] = nome
+        user_data["email"] = email
+        user_data["usuario"] = usuario
+        user_data["senha"] = senha
 
-        db.session.commit()
-    
-        flash("Dados atualizados com sucesso.", "success")
-        return redirect(url_for("index"))
+        # Enviar a requisição PUT para atualizar o usuario no firebase
+        response = requests.put(f"{firebase_url}/usuarios/{user_id}.json", json=user_data)
 
-    return render_template("edit_user.html", datas=data, user_id=user_id)
+        if response.ok:
+            return redirect(url_for("index"))
+        else:
+            return "Erro ao atualizar usuário."
+        
+    return render_template("usuarios/update.html", user_id=user_id, user=user_data)
 
 # deletar usuario
-@app.route("/delete_user/<string:id>", methods=["GET"])
-def delete_user(id):
-    con = sql.connect("app_orion_database.db")
-    cur=con.cursor()
-    cur.execute("delete from users WHERE ID=?",(id))
-    con.commit()
-    flash("Dados deletados.","warning")
-
+@app.route("/delete_user/<string:user_id>", methods=["POST"])
+def delete_user(user_id):
     
-    return redirect(url_for("list_user"))
+    # Enviar a requisição DELETE para remover o usuaario do Firebase
+    response = requests.delete(f'{firebase_url}/usuarios/{user_id}.json')
+
+    if reponse.ok:
+        return redirect(url_for("index"))
+    else:
+        return "Erro ao excluir usuario."
+    
+#============================ Membros ===========================================================================================
 
 # listar membro
 @app.route("/list_member")
 def list_member():
-    
-    con = sql.connect("app_orion_database.db")
-    con.row_factory=sql.Row
-    cur=con.cursor()
-    cur.execute("select * from members")
-    data=cur.fetchall()
 
-    user_id = session.get('user_id')
-    if user_id is None:
-        flash("Você precisa fazer login para acessar esta página.", "danger")
-        return redirect(url_for("login"))
-    return render_template("membros/list_member.html", datas=data, user_id=user_id)
+    return render_template("membros/read.html")
 
 #adicionar membro
 @app.route("/add_member", methods=["POST", "GET"])
@@ -403,8 +399,4 @@ def list_report():
     return render_template("membros/list_report.html", datas=data, user_id = user_id)
 
 if __name__=='__main__':
-    with app.app_context():
-
-        db.create_all()
-    
-    app.run(debug=True)
+    app.run(debug=True, port=911)
