@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "appweb-orion-php",
+  "private_key_id": "21595fb3896852e1f9f5e2941c7dd163918655e0",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDAT/xh/Axp6xTq\nr96eC1eqg/f+D70pcOOL4unpgKIeZIQyLdRVvstq+y/AMAXXLIQ4Ms3jr25Pgw+K\nT/VaRa1Cto/SGYxw8KXlmvg1qfoH+jjC6CaJnQBCcuqJfGmvBKtRkpQY8EO6ljKc\ngcwIfV7DW9yE/y+Y5knGIEIIo3Rkk+oP0pM3X6V8pYD5l4G+97YiIwXHoV8Wrymc\nDfmfDMdsMJP1Ia2mdjJjNRB66WFwiGntAfccGRCkU04GIUja+02gCPpqn//N11Eh\nocA8vXT/+DxCUS4bvsImrJIstI6v3BgXfSnIoqBXjHtFlrqlKvXAhmzHiyJkM6Rh\n1QNqeL4DAgMBAAECggEABzjZwbTtTcBSJEV03EWRG2piUqG1A7c6wbhEpYwQSojm\n0rBC6ZzFLIrWA7x/SPyMfe8hKUb0zbqeckjHbjDwrUaIMdEwzir+EpiBGsQmi3cm\nUOIr/v4CPPyYzzn4tBBo/fgTD2QH1HGAjBJvHvXVAbbTmhEFRhOGkLtfD3j9TYDp\nzZnG9i/pGYK3lLgdfOOBPjdJ6eVuqEXcGXOwE5x28nr6xYzi9vUli7yppXdY8UXu\nTYTOdJ5nKMMG5rGoSOeM3vAH7JjttibQNNr+n9w7F4z7JzI9IRY5oI0ReRUFMU/Y\n1RXff5UmH1AP03XJotowLfcMlyLzJCklq0n21fAuHQKBgQDyiRpUpRWuxXk8g1Fc\noZlJqVOatpxkvu9hdyZsAhYTrDg4Nx7S8Ak7oqx7haVvxDmYSf8BzamVNq5iwupU\nChcJJ1Uo/GaI+1XbWbvmNdvc50XlDPOFZD6H5U+2Cv+o+XZsoSwrCmPn1jxf+Qto\nRwNlGd3c6x3zFboZhez+IoU/pQKBgQDK/R2rq5hp68583Mu224/0x2QLDt5Um2ja\n9LchgnzFtzStuIirQ1IXwSc8PJGeXH0vRgKYys0Mzsr4x2mdOnM5yzbkatv5UamO\nOW1rwCpki3P6uFU3niu+mprv+6eoo1c/o7uIe11rMNZtscqstU2mGNOZ8tZ0WBnU\nu/E6+wwWhwKBgC1x8zUZGc79wZHNKVmqDgb3a2r5/KQEAubIZLKoUWquQnqGGYh8\n4b4C5T7f8/fVVNVsSBQWbUhATrzCuRW2LkrQy+w6Hxxbu+K2Fbc1MFVcIISiwJ6m\nAfGEzkLWHMGUvNPt/1CxSbcPNZDmIXUQmVpAVoompB4AXDacGaQk48LhAoGAf3nn\n2TiBFfvNiCKNGH/YbuuNC1jCDTYv6lmGbFfrDauZPIPH6G31rw9RGYYcGOySfU6l\nMNkjXqi7VPK+g8wCMshI57en/3HmXnf4HJPoy428Pzbl5XDCngevx4gt6Tzy/PdR\nPUvkBf38m5Ts5/tQEUBEGskjHpt5VVzWCKlCFR8CgYBEC/rViLDNNeRY//IX3YZS\n5MxArmIJ5Ui9Il9pGKbTYVJPlqP0/OjV4cPpP2Bzi1vRjh+wrEy5vS4nAdY9L8uy\nVZxOMRlAaPlaxjm6IMDQqzwzuz79YlKf3g6mJsoUpPBfo1pqs1uaJwWzKJ4krJgU\nC1ETPYj7PIbbE+a2yHlrjQ==\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-ce2gg@appweb-orion-php.iam.gserviceaccount.com",
+  "client_id": "109767100967523677987",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-ce2gg%40appweb-orion-php.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
