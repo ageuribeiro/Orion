@@ -3,7 +3,7 @@
 <div class="row">
     <div class="col-12 mx-auto">
         <h3>Editar Membro</h3>
-        <form action="/edit/ {{  key  }}" method="post">
+        <form action="/edit/{{key}}" method="post">
             <table class="table">
                 <tr>
                     <td>
@@ -27,7 +27,7 @@
                     <td>
                         <div class="form-group">
                             <label for="data_nasc">Data de Nascimento</label>
-                            <input type="text" name="data_nasc" id="data_nasc" required class="form-control" value="{{ data.data_nasc }}">
+                            <input type="date" name="data_nasc" id="data_nasc" required class="form-control" value="{{ data.data_nasc }}" placeholder="dd-mm-yyyy" min="1900-01-01" max="2100-12-31">
                         </div>
                     </td>
                     <td>
@@ -98,7 +98,7 @@
                     <td>
                         <div class="form-group">
                             <label for="batizado">Batizado nas águas</label>
-                            <input type="text" name="batizado" id="batizado" required class="form-control" value="{{ data.batizado_nas_aguas }}">
+                            <input type="text" name="batizado" id="batizado" required class="form-control" value="{{ data.batizado }}">
                                
                         </div>
                     </td>
@@ -107,7 +107,7 @@
                     <td>
                         <div class="form-group">
                             <label for="data_batismo">Data do Batismo</label>
-                            <input type="text" name="data_batismo" id="data_batismo" required class="form-control" value="{{ data.data_batismo_nas_aguas }}">
+                            <input type="date" name="data_batismo" id="data_batismo" required class="form-control" value="{{ data.data_batismo }}" placeholder="dd-mm-yyyy" min="1900-01-01" max="2100-12-31">
                         </div>
                     </td>
 
@@ -127,13 +127,13 @@
                     <td>
                         <div class="form-group">
                             <label for="data_da_consagracao">Data da Consagração</label>
-                            <input type="text" name="data_da_consagracao" id="data_da_consagracao" required class="form-control" value="{{ data.data_da_consagracao }}">
+                            <input type="date" name="data_da_consagracao" id="data_da_consagracao" required class="form-control" value="{{ data.data_da_consagracao }}" placeholder="dd-mm-yyyy" min="1900-01-01" max="2100-12-31">
                         </div>
                     </td>
                     <td>
                         <div class="form-group">
                             <label for="data_da_apresentacao">Data da Apresentação</label>
-                            <input type="text" name="data_da_apresentacao" id="data_da_apresentacao" required class="form-control" value="{{ data.data_da_apresentacao }}">
+                            <input type="date" name="data_da_apresentacao" id="data_da_apresentacao" required class="form-control" value="{{ data.data_da_apresentacao }}" placeholder="dd-mm-yyyy" min="1900-01-01" max="2100-12-31">
                         </div>
                     </td>
                 </tr>
@@ -191,7 +191,7 @@
                     <td>
                         <div class="form-group">
                             <label for="tem_cartao">Tem Cartão</label>
-                            <input  type="text" class="form-control" name="tem_cartao" id="tem_cartao" value="{{ data.tem_cartao_de_membro }}">
+                            <input  type="text" class="form-control" name="tem_cartao" id="tem_cartao" value="{{ data.tem_cartao }}">
                         </div>
                     </td>
                 </tr>
