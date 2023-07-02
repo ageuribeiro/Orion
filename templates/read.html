@@ -1,0 +1,42 @@
+{% extends 'layout.html' %}
+{% block body %}
+
+<div class="container">
+    <div class="row mt-5 mb-5">
+        <h3 class="text-center text-muted mb-3">Lista de membros cadastrados.</h3>
+        <p class="text-right">
+            <a href="/add" class="btn btn-success"> + Novo Membro</a>
+        </p>
+        <table class="table no-border">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Data de Nascimento</th>
+                <th scope="col">Telefone</th>
+                <th scope="col">Email</th>
+                <th scope="col">Bairro</th>
+                <th scope="col">Função</th>
+                <th scope="col">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for key, data in data.items() %}
+                    <tr>
+                        <td>{{data.id}}</td>
+                        <td>{{data.nome}}</td>
+                        <td>{{data.data_nasc}}</td>
+                        <td>{{data.telefone}}</td>
+                        <td>{{data.email}}</td>
+                        <td>{{data.bairro}}</td>
+                        <td>{{data.cargo_na_igreja}}</td>
+                        <td><a href="/report/ {{ key }}" class="btn btn-outline-primary" target="_blank">Gerar PDF</a></td>
+                        <td><a href="/edit/ {{ key }}" class="btn btn-primary" title="Editar Membro">Editar</a></td>
+                        <td><a href="/delete/ {{ key }}" class="btn btn-danger" title="Deletar Membro" onclick="return confirm('Você deseja excluir este membro?')">Deletar</a></td>
+                    </tr>
+              {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,203 @@
+{% extends 'layout.html' %}
+{% block body %}
+<div class="row">
+    <div class="col-12 mx-auto">
+        <h3>Editar Membro</h3>
+        <form action="/edit/ {{  key  }}" method="post">
+            <table class="table">
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <label for="nome">Nome</label>
+                            <input type="text" name="nome" id="nome" required class="form-control" value="{{ data.nome }}">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label for="pai">Pai</label>
+                            <input type="text" name="pai" id="pai" required class="form-control" value="{{ data.pai }}">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label for="mae">Mãe</label>
+                            <input type="text" name="mae" id="mae" required class="form-control" value="{{ data.mae }}">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label for="data_nasc">Data de Nascimento</label>
+                            <input type="text" name="data_nasc" id="data_nasc" required class="form-control" value="{{ data.data_nasc }}">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label for="estado_civil">Estado Civil</label>
+                            <input type="text" name="estado_civil" id="estado_civil" required class="form-control" value="{{ data.estado_civil }}">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <label for="cpf">CPF</label>
+                            <input type="text" name="cpf" id="cpf" required class="form-control" value="{{ data.cpf }}">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label for="rg">RG</label>
+                            <input type="text" name="rg" id="rg" required class="form-control" value="{{ data.rg }}">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label for="setor_atual">Setor Atual</label>
+                            <input type="text" name="setor_atual" id="setor_atual" required class="form-control" value="{{ data.setor_atual }}">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label for="igreja_atual">Igreja Atual</label>
+                            <input type="text" name="igreja_atual" id="igreja_atual" required class="form-control" value="{{ data.igreja_atual }}">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label for="setor_anterior">Setor Anterior</label>
+                            <input type="text" name="setor_anterior" id="setor_anterior" required class="form-control" value="{{ data.setor_anterior }}">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <label for="igreja_anterior">Igreja Anterior</label>
+                            <input type="text" name="igreja_anterior" id="igreja_anterior" required class="form-control" value="{{ data.igreja_anterior }}">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label for="batizado_com_espirito_santo">Batizado com Espirito Santo</label>
+                            <input type="text" name="batizado_com_espirito_santo" id="batizado_com_espirito_santo" class="form-control" value="{{ data.batizado_com_espirito_santo }}">
+                                
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label for="escolaridade">Escolaridade</label>
+                            <input type="text" name="escolaridade" id="escolaridade" required class="form-control" value="{{ data.escolaridade }}">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label for="profissao">Profissão</label>
+                            <input type="text" name="profissao" id="profissao" required class="form-control" value="{{ data.profissao }}">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label for="batizado">Batizado nas águas</label>
+                            <input type="text" name="batizado" id="batizado" required class="form-control" value="{{ data.batizado_nas_aguas }}">
+                               
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <label for="data_batismo">Data do Batismo</label>
+                            <input type="text" name="data_batismo" id="data_batismo" required class="form-control" value="{{ data.data_batismo_nas_aguas }}">
+                        </div>
+                    </td>
+
+                    <td>
+                        <div class="form-group">
+                            <label for="igreja_de_batismo">Igreja de Batismo</label>
+                            <input type="text" name="igreja_de_batismo" id="igreja_de_batismo" required class="form-control" value="{{ data.igreja_de_batismo }}">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label for="admitido_por">Admitido por</label>
+                            <input class="form-select" aria-label="Default Select Example" name="admitido_por" id="admitido_por" value="{{ data.admitido_por }}">
+                                
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label for="data_da_consagracao">Data da Consagração</label>
+                            <input type="text" name="data_da_consagracao" id="data_da_consagracao" required class="form-control" value="{{ data.data_da_consagracao }}">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label for="data_da_apresentacao">Data da Apresentação</label>
+                            <input type="text" name="data_da_apresentacao" id="data_da_apresentacao" required class="form-control" value="{{ data.data_da_apresentacao }}">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <label for="cargo_na_igreja">Cargo/Função</label>
+                            <input type="text" name="cargo_na_igreja" id="cargo_na_igreja" class="form-control" required value="{{ data.cargo_na_igreja }}">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label for="endereco">Endereço</label>
+                            <input type="text" name="endereco" id="endereco" required class="form-control" value="{{ data.endereco }}">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label for="bairro">Bairro</label>
+                            <input type="text" name="bairro" id="bairro" required class="form-control" value="{{ data.bairro }}">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label for="cidade">Cidade</label>
+                            <input type="text" name="cidade" id="cidade" required class="form-control" value="{{ data.cidade }}">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label for="estado">Estado</label>
+                            <input type="text" name="estado" id="estado" required class="form-control" value="{{ data.estado }}">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <label for="cep">CEP</label>
+                            <input type="text" name="cep" id="cep" required class="form-control" value="{{ data.cep }}">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label for="telefone">Telefone</label>
+                            <input type="tel" name="telefone" id="telefone" required class="form-control" value="{{ data.telefone }}">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" name="email" id="email" required class="form-control" value="{{ data.email }}">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label for="tem_cartao">Tem Cartão</label>
+                            <input  type="text" class="form-control" name="tem_cartao" id="tem_cartao" value="{{ data.tem_cartao_de_membro }}">
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <input type="submit" value="Confirmar" class="btn btn-secondary">
+        </form>
+    </div>
+</div>
+{% endblock %}
