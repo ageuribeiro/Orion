@@ -166,8 +166,6 @@ def add():
     return render_template('add.html')
 
 
-
-
 # Rota para editar dados      
 @app.route('/edit/<key>', methods=['GET', 'POST'])
 def edit_member(key):
@@ -290,15 +288,17 @@ def update_data(key, new_data):
 
 # Função para deletar dados
 def delete_data(key):
-    url_delete = f"https://appweb-orion-php-default-rtdb.firebaseio.com/members/{key}.json"
+    url_delete = f"https://appweb-orion-php-default-rtdb.firebaseio.com/membros/{key}.json"
+    
     response = requests.delete(url_delete)
     if response.status_code == 200:
-        print('Dados excluídos com sucesso.')
+        print('Dados excluidos com sucesso.')
+        print(key)
+        print(url_delete)
     else:
         print('Erro ao excluir dados.')
 
 
-
-
+# Inicialização da aplicação Flask
 if __name__=='__main__':
     app.run(debug=True)
