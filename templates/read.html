@@ -23,7 +23,7 @@
             <tbody>
                 {% for key, data in data.items() %}
                     <tr>
-                        <td>{{data.id}}</td>
+                        <td class="text-uppercase">{{key}}</td>
                         <td>{{data.nome}}</td>
                         <td>{{data.data_nasc}}</td>
                         <td>{{data.telefone}}</td>
@@ -32,7 +32,7 @@
                         <td>{{data.cargo_na_igreja}}</td>
                         <td><a href="/report/ {{ key }}" class="btn btn-outline-primary" target="_blank">Gerar PDF</a></td>
                         <td><a href="/edit/ {{ key }}" class="btn btn-primary" title="Editar Membro">Editar</a></td>
-                        <td><a href="/delete/ {{ key }}" class="btn btn-danger" title="Deletar Membro" onclick="return confirm('Você deseja excluir este membro?')">Deletar</a></td>
+                        <td><a href="/delete/ {{ key }}" class="btn btn-danger" title="Deletar Membro">Deletar</a></td>
                     </tr>
               {% endfor %}
             </tbody>

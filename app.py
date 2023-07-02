@@ -6,6 +6,7 @@ import os
 import pyrebase
 import string
 import time
+import random
 
 from flask import Flask, render_template, request, redirect, flash, url_for, session
 
@@ -50,7 +51,7 @@ url = "https://appweb-orion-php-default-rtdb.firebaseio.com/members.json"
 @app.route("/", methods=["POST", "GET"])
 def login():
     if('user' in session):
-        return render_template("read.html")
+        return redirect(url_for('read'))
 
     if request.method == "POST":
         email = request.form.get("email")
@@ -60,6 +61,7 @@ def login():
 
             user = auth.sign_in_with_email_and_password(email, password)
             session['user'] = email
+            return redirect(url_for('read'))
         except:
             flash('Failed to login','danger')
             time.sleep(5)
@@ -141,11 +143,7 @@ def add():
         email = request.form['email']
         tem_cartao = request.form['tem_cartao']
         foto = request.files['foto']
-        id = generate_id()
         
-        # Verificar se o ID já existe
-        while check_id_exists(id):
-            id = generate_id()
 
         # Salvar a imagem em um diretorio local
         # Criar diretorio com nome do membro
@@ -158,37 +156,22 @@ def add():
         foto.save(imagem_path)
 
         # Salvar os dados no firebase
-        data = {'id':id, 'nome':nome, 'pai':pai,'mae':mae, 'data_nasc':data_nasc, 'estado_civil':estado_civil, 'cpf':cpf, 'rg':rg,'setor_atual':setor_atual, 'igreja_atual':igreja_atual, 'setor_anterior':setor_anterior, 'igreja_anterior':igreja_anterior, 'batizado_com_espirito_santo':batizado_com_espirito_santo, 'escolaridade':escolaridade, 'profissao':profissao,'batizado':batizado,'data_batismo':data_batismo, 'igreja_de_batismo':igreja_de_batismo, 'admitido_por':admitido_por, 'data_da_consagracao':data_da_consagracao, 'data_da_apresentacao':data_da_apresentacao, 'cargo_na_igreja':cargo_na_igreja, 'endereco':endereco, 'bairro':bairro, 'cidade':cidade, 'estado':estado, 'cep':cep, 'telefone':telefone, 'email':email, 'tem_cartao':tem_cartao, 'foto': imagem_path }
+        data = {'nome':nome, 'pai':pai,'mae':mae, 'data_nasc':data_nasc, 'estado_civil':estado_civil, 'cpf':cpf, 'rg':rg,'setor_atual':setor_atual, 'igreja_atual':igreja_atual, 'setor_anterior':setor_anterior, 'igreja_anterior':igreja_anterior, 'batizado_com_espirito_santo':batizado_com_espirito_santo, 'escolaridade':escolaridade, 'profissao':profissao,'batizado':batizado,'data_batismo':data_batismo, 'igreja_de_batismo':igreja_de_batismo, 'admitido_por':admitido_por, 'data_da_consagracao':data_da_consagracao, 'data_da_apresentacao':data_da_apresentacao, 'cargo_na_igreja':cargo_na_igreja, 'endereco':endereco, 'bairro':bairro, 'cidade':cidade, 'estado':estado, 'cep':cep, 'telefone':telefone, 'email':email, 'tem_cartao':tem_cartao, 'foto': imagem_path }
         create_data(data)
 
         # Exibir mensagem de flash
         flash("Dados cadastrados com sucesso.","success")
 
-        # Redirecionar para a lista de membros para gerar pdf
-        return redirect(url_for('index'))
+        return redirect(url_for('read'))
     return render_template('add.html')
 
 
-# Rota para exibir os dados do membro e gerar o PDF
-@app.route("/member/view/<string:id>")
-def view_member(id):
-    con = sql.connect("app_orion_database.db")
-    cur = con.cursor()
-    cur.execute("SELECT * FROM members WHERE ID = ?", (id,))
-    member_data = cur.fetchone()
-    con.close()
-
-    if member_data is None:
-        flash("Membro não encontrado.", "danger")
-        return redirect(url_for("index"))
-    
-    return render_template("membros/view_member.html", member_data = member_data)
 
 
 # Rota para editar dados      
 @app.route('/edit/<key>', methods=['GET', 'POST'])
 def edit_member(key):
-    if request.method=="POST":
+    if request.method == "POST":
         new_nome = request.form["nome"]
         new_pai = request.form["pai"]
         new_mae =  request.form["mae"]
@@ -254,64 +237,49 @@ def edit_member(key):
         update_data(key, new_data)
         
         flash("Dados atualizados com sucesso","success")
-        return redirect(url_for("read"))
+        return redirect('/read')
     else:
         data = read_data()
         if key in data:
             return render_template("edit.html", key=key, data=data[key])
         else:
-            return "Invalid Key."
-
-# Rota para deletar dados
-@app.route('/delete/<key>')
-def delete(key):
-    delete_data(key)
-    flash('Dados deletados com sucesso.','success')
-    return redirect(url_for('read'))
-
-# listar relatorio do membro
-@app.route("/list_report")
-def list_report():
-    con = sql.connect("app_orion_database.db")
-    con.row_factory=sql.Row
-    cur=con.cursor()
-    cur.execute("select * from members")
-    data=cur.fetchall()
-
-    user_id = session.get('user_id')
-    if user_id is None:
-        flash("Você precisa fazer login para acessar esta página.", "danger")
-        return redirect(url_for("login"))
-
-    return render_template("membros/list_report.html", datas=data, user_id = user_id)
+            return "Chave Inválida."
 
 
 # Rota para exibir os dados do membro e gerar o PDF
 @app.route("/report/<key>")
 def report(key):
    return render_template("index.html")
+
+
+# Rota para excluir dados
+@app.route('/delete/<key>')
+def delete(key):
+    delete_data(key)
+    flash('Dados deletados com sucesso.','success')
+    return redirect('/read')
+
+
 #============================ Funções para os métodos HTTP ===========================================================================================
 
 # Função para criar os dados
 def create_data(data):
+   
     response = requests.post(url, json.dumps(data))
     if response.status_code != 200:
         print('Erro ao criar dados.')
 
 # Função para ler os dados
 def read_data():
-    try:
-        response = requests.get(url)
-        response.raise_for_status()
+   
+    response = requests.get(url)
+    if response.status_code == 200:
         
         data = response.json()
         return data
-    except requests.exceptions.RequestException as e:
-        print('Erro ao fazer a requisição:', str(e))
-        return None
-    except ValueError as e:
-        print('Erro ao processar a resposta JSON: ', str(e))
-        return None
+    else:
+        print('Erro ao ler dados.')
+        
 
 # Função para atualizar dados
 def update_data(key, new_data):
