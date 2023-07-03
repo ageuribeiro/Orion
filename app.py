@@ -62,10 +62,17 @@ def login():
             user = auth.sign_in_with_email_and_password(email, password)
             session['user'] = email
             return redirect(url_for('read'))
-        except:
-            flash('Failed to login','danger')
+        except Exception as e:
+            error_message = str(e)
+            error_json = e.args[1]
+            error_data = json.loads(error_json)
+            error_message = error_data['error']['message']
+            flash('Failed to login' + error_message,'danger')
             time.sleep(5)
-            return flash('Failed to login','danger')
+        
+    elif requests.status_codes == 400:
+        flash('Você não tem permissão para acessar este sistema','warning')
+
     return render_template("index.html")
 
 # logout session    
@@ -73,6 +80,7 @@ def login():
 def logout():
     session.pop('user', None)
     session.clear()
+    # check_session()
     return redirect(url_for('login'))
 
 #============================ Funções de configuração ===========================================================================================
@@ -247,7 +255,7 @@ def edit(key):
 # Rota para exibir os dados do membro e gerar o PDF
 @app.route("/report/<key>")
 def report(key):
-   return render_template("index.html")
+   return render_template("report.html")
 
 
 # Rota para excluir dados
@@ -288,7 +296,7 @@ def update_data(key, new_data):
 
 # Função para deletar dados
 def delete_data(key):
-    url_delete = f"https://appweb-orion-php-default-rtdb.firebaseio.com/membros/{key}.json"
+    url_delete = f"https://appweb-orion-php-default-rtdb.firebaseio.com/members/{key}.json"
     
     response = requests.delete(url_delete)
     if response.status_code == 200:
@@ -298,7 +306,9 @@ def delete_data(key):
     else:
         print('Erro ao excluir dados.')
 
-
+# Função para gerar o PDF
+def report_data(key):
+    url_report = f"https://appweb-orion-php-default-rtdb.firebaseio.com/members/{key}.json"
 # Inicialização da aplicação Flask
 if __name__=='__main__':
     app.run(debug=True)
