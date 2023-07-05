@@ -114,8 +114,8 @@ def read():
     if 'user' not in session:
         return redirect(url_for('login'))
 
-    data = read_data()
-    return render_template('read.html', data=data)
+    data, record_count = read_data()
+    return render_template('read.html', data=data, record_count=record_count)
 
 # Rota para adicionar dados
 @app.route('/add', methods=['GET','POST'])
@@ -275,17 +275,31 @@ def create_data(data):
     if response.status_code != 200:
         print('Erro ao criar dados.')
 
-# Função para ler os dados
-def read_data():
-   
+
+# Função para ler a quantidade de registros
+def get_record_count():
     response = requests.get(url)
     if response.status_code == 200:
-        
         data = response.json()
-        return data
+        record_count = len(data) if data else 0
+        return record_count
+    else:
+        print('Erro ao obter o número de registros.')
+        return 0  
+
+
+# Função para ler os dados
+def read_data():
+    record_count = get_record_count()
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        return data, record_count
     else:
         print('Erro ao ler dados.')
-        
+        return None, record_count
+
+   
 
 # Função para atualizar dados
 def update_data(key, new_data):
@@ -293,6 +307,7 @@ def update_data(key, new_data):
     response = requests.patch(url_update, json.dumps(new_data))
     if response.status_code != 200:
         print('Erro ao atualizar dados.')
+
 
 # Função para deletar dados
 def delete_data(key):

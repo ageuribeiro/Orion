@@ -4,39 +4,56 @@
 <div class="container">
     <div class="row mt-5 mb-5">
         <h3 class="text-center text-muted mb-3">Lista de membros cadastrados.</h3>
-        <p class="text-right">
-            <a href="/add" class="btn btn-success"> + Novo Membro</a>
-        </p>
-        <table class="table no-border">
+        <p> Registros: <span class="badge badge-primary text-success fs-6">{{ record_count }}</span></p>
+        <p class="text-right"><a href="/add" class="btn btn-success"> + Novo Membro </a></p>
+        <table class="table no-border table-fixed">
             <thead>
               <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Nome</th>
-                <th scope="col">Data de Nascimento</th>
-                <th scope="col">Telefone</th>
-                <th scope="col">Email</th>
-                <th scope="col">Bairro</th>
-                <th scope="col">Função</th>
-                <th scope="col">Ações</th>
+                <th scope="col" style="width: 100px"><div class="text-truncate">ID</div></th>
+                <th scope="col" style="width: 100px"><div class="text-truncate">Nome</div></th>
+                <th scope="col" style="width: 100px"><div class="text-truncate">Dt.Nasc</div></th>
+                <th scope="col" style="width: 100px"><div class="text-truncate">Telefone</div></th>
+                <th scope="col" style="width: 100px"><div class="text-truncate">Email</div></th>
+                <th scope="col" style="width: 100px"><div class="text-truncate">Bairro</div></th>
+                <th scope="col" style="width: 100px"><div class="text-truncate">Função</div></th>
+                <th scope="col" style="width: 100px"><div class="text-truncate">Ações</div></th>
               </tr>
             </thead>
             <tbody>
                 {% for key, data in data.items() %}
                     <tr>
-                        <td class="text-uppercase">{{key}}</td>
-                        <td>{{data.nome}}</td>
-                        <td>{{data.data_nasc}}</td>
-                        <td>{{data.telefone}}</td>
-                        <td>{{data.email}}</td>
-                        <td>{{data.bairro}}</td>
-                        <td>{{data.cargo_na_igreja}}</td>
-                        <td><a href="/report/{{ key }}" class="btn btn-outline-secondary">Gerar PDF</a></td>
-                        <td><a href="/edit/{{ key }}" class="btn btn-outline-primary" title="Editar Membro">Editar</a></td>
-                        <td><a href="/delete/{{ key }}" class="btn btn-outline-danger" title="Deletar Membro">Deletar</a></td>
+                        <td class="text-uppercase w-100"><div class="text-truncate">{{key}}</div></td>
+                        <td class="w-100"><div class="text-truncate">{{data.nome}}</div></td>
+                        <td class="w-100"><div class="text-truncate date-format" aria-placeholder="dd/mm/yyyy">{{data.data_nasc}}</div></td>
+                        <td class="w-100"><div class="text-truncate">{{data.telefone}}</div></td>
+                        <td class="w-100"><div class="text-truncate">{{data.email}}</div></td>
+                        <td class="w-100"><div class="text-truncate">{{data.bairro}}</div></td>
+                        <td class="w-100"><div class="text-truncate">{{data.cargo_na_igreja}}</div></td>
+                        <td class="d-flex"><div class="text-truncate">
+                            <a href="/report/{{ key }}" class="btn btn-outline-secondary mx-2">Report</a>
+                            <a href="/edit/{{ key }}" class="btn btn-outline-primary mx-2 " title="Editar Membro">Editar</a>
+                            <a href="/delete/{{ key }}" class="btn btn-outline-danger mx-2" title="Deletar Membro">Deletar</a></div>
+                        </td>
                     </tr>
               {% endfor %}
             </tbody>
         </table>
     </div>
 </div>
+<script>
+    // Obtém todas as divs com a classe "date-format"
+    var dateDivs = document.getElementsByClassName("date-format");
+  
+    // Itera sobre todas as divs
+    for (var i = 0; i < dateDivs.length; i++) {
+      var dateString = dateDivs[i].innerText;
+      var date = new Date(dateString);
+  
+      // Formata a data no padrão local (dd/mm/yyyy)
+      var formattedDate = date.toLocaleDateString();
+  
+      // Atualiza o texto da div com a data formatada
+      dateDivs[i].innerText = formattedDate;
+    }
+  </script>
 {% endblock %}
