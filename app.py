@@ -177,6 +177,7 @@ def add():
 # Rota para editar dados      
 @app.route('/edit/<key>', methods=['GET', 'POST'])
 def edit(key):
+    
     if request.method == "POST":
         new_nome = request.form['nome']
         new_pai = request.form['pai']
@@ -242,14 +243,20 @@ def edit(key):
 
         update_data(key, new_data)
         
-        flash("Dados atualizados com sucesso","success")
+        flash("Dados atualizados com sucesso", "success")
         return redirect('/read')
     else:
-        data = read_data()
-        if key in data:
-            return render_template("edit.html", key=key, data=data[key])
+        url = "https://appweb-orion-php-default-rtdb.firebaseio.com/members/{key}.json"
+        response = requests.get(url)
+        
+        if response.status_code == 200:
+            data = response.json()
+            print(data)
+            return render_template("edit.html", key=key, data=data)
         else:
-            return "Chave Inválida."
+            flash("Chave inválida", "error")
+            return redirect('/read')
+            
 
 
 # Rota para exibir os dados do membro e gerar o PDF
@@ -316,8 +323,7 @@ def delete_data(key):
     response = requests.delete(url_delete)
     if response.status_code == 200:
         print('Dados excluidos com sucesso.')
-        print(key)
-        print(url_delete)
+
     else:
         print('Erro ao excluir dados.')
 
@@ -326,4 +332,4 @@ def report_data(key):
     url_report = f"https://appweb-orion-php-default-rtdb.firebaseio.com/members/{key}.json"
 # Inicialização da aplicação Flask
 if __name__=='__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=911)

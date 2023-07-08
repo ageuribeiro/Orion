@@ -1,0 +1,18 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.text-underline{
+    text-decoration: underline;
+}
+
+.container-custom{
+    margin-left: 45px;
+    margin-right: 45px;
+}
+
+/* Estilos para telas menores que 600 pixels */
+@media (min-width:120px) and (max-width: 600px){
+    
+}

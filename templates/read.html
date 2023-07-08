@@ -1,43 +1,46 @@
 {% extends 'layout.html' %}
 {% block body %}
 
-<div class="container">
+<div class="container-custom">
     <div class="row mt-5 mb-5">
         <h3 class="text-center text-muted mb-3">Lista de membros cadastrados.</h3>
         <p> Registros: <span class="badge badge-primary text-success fs-6">{{ record_count }}</span></p>
         <p class="text-right"><a href="/add" class="btn btn-success"> + Novo Membro </a></p>
-        <table class="table no-border table-fixed">
-            <thead>
-              <tr>
-                <th scope="col" style="width: 100px"><div class="text-truncate">ID</div></th>
-                <th scope="col" style="width: 100px"><div class="text-truncate">Nome</div></th>
-                <th scope="col" style="width: 100px"><div class="text-truncate">Dt.Nasc</div></th>
-                <th scope="col" style="width: 100px"><div class="text-truncate">Telefone</div></th>
-                <th scope="col" style="width: 100px"><div class="text-truncate">Email</div></th>
-                <th scope="col" style="width: 100px"><div class="text-truncate">Bairro</div></th>
-                <th scope="col" style="width: 100px"><div class="text-truncate">Função</div></th>
-                <th scope="col" style="width: 100px"><div class="text-truncate">Ações</div></th>
-              </tr>
-            </thead>
-            <tbody>
-                {% for key, data in data.items() %}
-                    <tr>
-                        <td class="text-uppercase w-100"><div class="text-truncate">{{key}}</div></td>
-                        <td class="w-100"><div class="text-truncate">{{data.nome}}</div></td>
-                        <td class="w-100"><div class="text-truncate date-format" aria-placeholder="dd/mm/yyyy">{{data.data_nasc}}</div></td>
-                        <td class="w-100"><div class="text-truncate">{{data.telefone}}</div></td>
-                        <td class="w-100"><div class="text-truncate">{{data.email}}</div></td>
-                        <td class="w-100"><div class="text-truncate">{{data.bairro}}</div></td>
-                        <td class="w-100"><div class="text-truncate">{{data.cargo_na_igreja}}</div></td>
-                        <td class="d-flex"><div class="text-truncate">
-                            <a href="/report/{{ key }}" class="btn btn-outline-secondary mx-2">Report</a>
-                            <a href="/edit/{{ key }}" class="btn btn-outline-primary mx-2 " title="Editar Membro">Editar</a>
-                            <a href="/delete/{{ key }}" class="btn btn-outline-danger mx-2" title="Deletar Membro">Deletar</a></div>
-                        </td>
-                    </tr>
-              {% endfor %}
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table table-striped table-fixed">
+                <thead>
+                  <tr>
+                    <th scope="col" style="width: 100px"><div class="text-truncate">ID</div></th>
+                    <th scope="col" style="width: 100px"><div class="text-truncate">Nome</div></th>
+                    <th scope="col" style="width: 100px"><div class="text-truncate">Dt.Nasc</div></th>
+                    <th scope="col" style="width: 100px"><div class="text-truncate">Telefone</div></th>
+                    <th scope="col" style="width: 100px"><div class="text-truncate">Email</div></th>
+                    <th scope="col" style="width: 100px"><div class="text-truncate">Bairro</div></th>
+                    <th scope="col" style="width: 100px"><div class="text-truncate">Função</div></th>
+                    <th scope="col" style="width: 100px"><div class="text-truncate">Ações</div></th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for key, data in data.items() %}
+                        <tr>
+                            <td class="text-uppercase w-100"><div class="text-truncate">{{key}}</div></td>
+                            <td class="w-100 align-middle"><div class="text-truncate">{{data.nome}}</div></td>
+                            <td class="w-100 align-middle"><div class="text-truncate date-format" aria-placeholder="dd/mm/yyyy">{{data.data_nasc}}</div></td>
+                            <td class="w-100 align-middle"><div class="text-truncate">{{data.telefone}}</div></td>
+                            <td class="w-100 align-middle"><div class="text-truncate">{{data.email}}</div></td>
+                            <td class="w-100 align-middle"><div class="text-truncate">{{data.bairro}}</div></td>
+                            <td class="w-100 align-middle"><div class="text-truncate">{{data.cargo_na_igreja}}</div></td>
+                            <td class="d-flex"><div class="text-truncate">
+                                <a href="/report/{{key}}" class="btn btn-outline-secondary mx-2">Report</a>
+                                <a href="/edit/{{key}}" class="btn btn-outline-primary mx-2 " title="Editar Membro">Editar</a>
+                                <a href="/delete/{{key}}" class="btn btn-outline-danger mx-2" title="Deletar Membro">Deletar</a></div>
+                            </td>
+                        </tr>
+                  {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
     </div>
 </div>
 <script>
