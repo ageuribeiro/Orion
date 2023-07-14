@@ -1,7 +1,6 @@
 import requests 
 import json
-import pdfkit 
-import datetime
+import pdfkit
 import os
 import pyrebase
 import string
@@ -9,11 +8,9 @@ import time
 import random
 
 from flask import Flask, render_template, request, redirect, flash, url_for, session
-
+from datetime import datetime
 from flask_session import Session
 from datetime import timedelta
-
-
 
 app = Flask(__name__)
 app.secret_key = 'secret'
@@ -208,6 +205,17 @@ def edit(key):
         new_telefone = request.form['telefone']
         new_email = request.form['email']
         new_tem_cartao = request.form['tem_cartao']
+        new_foto = request.files['foto']
+
+        # Salvar a imagem em um diretorio local
+        # Criar diretorio com nome do membro
+        nome_less = new_nome.replace(" ","")
+        dir_membro = os.path.join('static', 'files', nome_less) 
+        os.makedirs(dir_membro, exist_ok=True)
+
+        # Salvar Imagem
+        new_imagem_path = os.path.join(dir_membro, nome_less + '.png')
+        new_foto.save(new_imagem_path)
 
         new_data = {
             "nome": new_nome,
@@ -238,7 +246,8 @@ def edit(key):
             "cep": new_cep,
             "telefone": new_telefone,
             "email": new_email,
-            "tem_cartao": new_tem_cartao
+            "tem_cartao": new_tem_cartao,
+            "foto": new_imagem_path
         }    
 
         update_data(key, new_data)
@@ -246,12 +255,12 @@ def edit(key):
         flash("Dados atualizados com sucesso", "success")
         return redirect('/read')
     else:
-        url = "https://appweb-orion-php-default-rtdb.firebaseio.com/members/{key}.json"
+        url = f"https://appweb-orion-php-default-rtdb.firebaseio.com/members/{key}.json"
         response = requests.get(url)
         
         if response.status_code == 200:
             data = response.json()
-            print(data)
+            
             return render_template("edit.html", key=key, data=data)
         else:
             flash("Chave inválida", "error")
@@ -262,8 +271,35 @@ def edit(key):
 # Rota para exibir os dados do membro e gerar o PDF
 @app.route("/report/<key>")
 def report(key):
-   return render_template("report.html")
+    url_report = f"https://appweb-orion-php-default-rtdb.firebaseio.com/members/{key}.json"
+    response = requests.get(url_report)
+    if response.status_code == 200:
+        data = response.json()
+        
 
+        #Formatar a data de nascimento
+        if'data_nasc' in data:
+            data_nasc = data['data_nasc']
+            data['data_nasc'] = datetime.strptime(data_nasc, "%Y-%m-%d").strftime("%d/%m/%Y")
+        
+        #Formatar a data de batismo
+        if'data_batismo' in data:
+            data_batismo = data['data_batismo']
+            data['data_batismo'] = datetime.strptime(data_batismo, "%Y-%m-%d").strftime("%d/%m/%Y")
+
+        #Formatar a data de consagração
+        if'data_da_consagracao' in data:
+            data_consagre = data['data_da_consagracao']
+            data['data_da_consagracao'] = datetime.strptime(data_consagre, "%Y-%m-%d").strftime("%d/%m/%Y")
+
+        #Formatar a data de apresentação
+        if'data_da_apresentacao' in data:
+            data_apresent = data['data_da_apresentacao']
+            data['data_da_apresentacao'] = datetime.strptime(data_apresent, "%Y-%m-%d").strftime("%d/%m/%Y")
+        return render_template("report.html", data=data)
+    else:
+        flash("Chave inválida", "danger")
+        return redirect('/read')
 
 # Rota para excluir dados
 @app.route('/delete/<key>')
@@ -311,7 +347,7 @@ def read_data():
 # Função para atualizar dados
 def update_data(key, new_data):
     url_update = f"https://appweb-orion-php-default-rtdb.firebaseio.com/members/{key}.json"
-    response = requests.patch(url_update, json.dumps(new_data))
+    response = requests.patch(url_update, json=new_data)
     if response.status_code != 200:
         print('Erro ao atualizar dados.')
 
@@ -327,9 +363,8 @@ def delete_data(key):
     else:
         print('Erro ao excluir dados.')
 
-# Função para gerar o PDF
-def report_data(key):
-    url_report = f"https://appweb-orion-php-default-rtdb.firebaseio.com/members/{key}.json"
+
+
 # Inicialização da aplicação Flask
 if __name__=='__main__':
     app.run(debug=True, port=911)

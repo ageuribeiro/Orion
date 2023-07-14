@@ -1,25 +1,103 @@
 {% extends 'layout.html' %}
 {% block body %}
-<h1>Gerar relatório</h1>
-<div class="row">
-    <div class="col-6 mx-auto">
-        <h3> Gerar relatório </h3>
-        <form action="report/{{key}}" method="post">
-            <legend class="alert alert-warning">Em construção!</legend>
-            <!-- <div class="form-group mt-3">
-                <label for="nome">Nome</label>
-                <input type="text" name="nome" id="nome" required class="form-control">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="/static/js/script.js" type="text/javascript" defer></script>
+<div class="container">
+    <div class="row">
+        <div class="col-12 mx-auto" id="content-report">
+            <div class="row">
+                <div class=" mt-2 pt-2 pb-0">
+                    <div class="row mb-2">
+                        <div class="col col-2 ml-auto d-flex justify-content-center align-items-center">
+                            <img src="/static/img/logo_ad.png" alt="logo" width="100">
+                        </div>
+                        <div class="col col-8 mx-auto d-flex justify-content-center align-items-center">
+                        <table>
+                            <tr>
+                                <td> 
+                                    <h3> Recadastramento do Rol de Membros.</h3>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h4 class="text-uppercase fw-normal text-center fst-italic"> Igreja Evangélica Assembléia de Deus</h4>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p class="fw-normal text-center"> Rua Conselheiro Cotegipe, 273 - Belém - São Paulo/SP </p>
+                                </td>
+                            </tr>
+                        </table>
+                        </div>
+                        <div class="col col-2 mr-auto d-flex justify-content-center align-items-center">
+                            <img src="{{'/'+data.foto }}" alt="foto-membro" width="100" class="rounded">
+                        </div>
+                    </div>
+                    <h4 class="my-3">Dados Pessoais</h4>
+                    <div class="row">
+                        <div class="col"><p id="nome"><b>Nome: </b>{{data.nome}}</p></div>
+                        <div class="col"><p><b>Pai: </b>{{data.pai}}</p></div>
+                        <div class="col"><p><b>Mãe: </b>{{data.mae}}</p></div>
+                        <div class="col"><p><b>Data de Nasc: </b>{{data.data_nasc}}</p></div>
+                        <div class="col"><p><b>Estado Civil: </b>{{data.estado_civil}}</p></div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><p><b>CPF: </b>{{data.cpf}}</p></div>
+                        <div class="col"><p><b>RG: </b>{{data.rg}}</p></div>
+                        <div class="col"><p><b>Escolaridade: </b>{{data.escolaridade}}</p></div>
+                        <div class="col"><p><b>Profissão: </b>{{data.profissao}}</p></div>
+                        <div class="col"><p><b>Email: </b>{{data.email}}</p></div>
+                    </div>
+                    <div class="row">
+                        <div class="col col-8"><p><b>Endereço: </b>{{data.endereco}} - {{data.bairro}} - {{data.cidade}}/{{data.estado}} - {{data.cep}}</p></div>
+                       
+                        <div class="col"><p><b>Telefone: </b>{{data.telefone}}</p></div>
+                    </div>
+                    <h4 class="my-3">Informações Ministeriais</h4>
+                    
+                    <div class="row">
+                        <div class="col col-8">
+                            <div class="row">
+                                <div class="col"><p><b>Cargo/Função: </b>{{data.cargo_na_igreja}}</p></div>
+                                <div class="col"><p><b>Igreja Atual: </b>{{data.igreja_atual}}</p></div>
+                                <div class="col"><p><b>Setor Atual: </b>{{data.setor_atual}}</p></div>
+                            </div>
+                            <div class="row">
+                                <div class="col"><p><b>Igreja Anterior: </b>{{data.igreja_anterior}}</p></div>
+                                <div class="col"><p><b>Setor Anterior: </b>{{data.setor_anterior}}</p></div>
+                                <div class="col"><p><b>Data do batismo: </b>{{data.data_batismo}}</p></div>
+                            </div>
+                            <div class="row">
+                                <div class="col"><p><b>Igreja de Batismo: </b>{{data.igreja_de_batismo}}</p></div>
+                                <div class="col"><p><b>Data da Consagração: </b>{{data.data_da_consagracao}}</p></div>
+                                <div class="col"><p><b>Data da Apresentação: </b>{{data.data_da_apresentacao}}</p></div>
+                            </div>
+                        </div>
+                        <div class="col col-3">
+                            <ul>
+                                <li><p><b>Batizado com Espirito Santo:</b> {{data.batizado_com_espirito_santo}}</p></li>
+                                <li><p><b>Batizado nas Águas: </b> {{data.batizado}}</p></li>
+                                <li><p><b>Admitido por: </b>{{data.admitido_por}}</p></li>
+                                <li><p><b>Tem cartão: </b>{{data.tem_cartao}}</p></li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <table class="table">
+
+                            <td class="text-truncate">
+                               
+                                
+                            </td>
+                        </tr>
+                    </table>
+                </div>  
             </div>
-            <div class="form-group mt-3">
-                <label for="email">Email</label>
-                <input type="email" name="email" id="email" required class="form-control">
-            </div>
-            <div class="form-group mt-3">
-                <label for="senha">Senha</label>
-                <input type="text" name="senha" id="senha" required class="form-control">
-            </div>
-            <input type="submit" value="Adicionar" class="btn btn-primary mt-3"> -->
-        </form>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary mt-3 mb-3 mx-auto" id="generate-pdf">Gerar PDF</button>
+        </div>
     </div>
 </div>
 {% endblock %}
