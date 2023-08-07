@@ -203,7 +203,6 @@ def edit(key):
         new_estado = request.form['estado']
         new_cep = request.form['cep']
         new_telefone = request.form['telefone']
-        new_email = request.form['email']
         new_tem_cartao = request.form['tem_cartao']
         new_foto = request.files['foto']
 
@@ -245,7 +244,6 @@ def edit(key):
             "estado": new_estado,
             "cep": new_cep,
             "telefone": new_telefone,
-            "email": new_email,
             "tem_cartao": new_tem_cartao,
             "foto": new_imagem_path
         }    
