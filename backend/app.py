@@ -1,52 +1,26 @@
-import requests 
-import json
-import pdfkit
-import os
-import pyrebase
-import string
+#Importando as bibliotecas
 import time
+import json
+import requests
 import random
-
-from flask import Flask, render_template, request, redirect, flash, url_for, session
+import string
+import os
 from datetime import datetime
-from flask_session import Session
-from datetime import timedelta
+from flask import Flask, jsonify, request, render_template, session, url_for, redirect, flash
+from flask_cors import CORS
+from authentication import auth
+
 
 app = Flask(__name__)
-app.secret_key = 'secret'
-app.config['UPLOAD_FOLDER'] = 'files'
-app.config['SESSION_TYPE'] ='filesystem'
-app.config['SESSION_PERMANENT'] = False
-app.config['SESSION_USER_SIGNER'] = True
-app.config['SESSION_COOKIE_SECURE'] = True
-app.config['PERMANET_SESSION_LIFETIME'] = timedelta(minutes=5)
-
-Session(app)
-
-config ={
-    'apiKey': "AIzaSyCuATOltNI_Vxu_ucfzXPNmN2V1puvqABU",
-    'authDomain': "appweb-orion-php.firebaseapp.com",
-    'databaseURL': "https://appweb-orion-php-default-rtdb.firebaseio.com",
-    'projectId': "appweb-orion-php",
-    'storageBucket': "appweb-orion-php.appspot.com",
-    'messagingSenderId': "365589111987",
-    'appId': "1:365589111987:web:cc51e2470cbe43ec40fcc6"
-}
-
-
-firebase = pyrebase.initialize_app(config)
-auth = firebase.auth()
-
-app.secret_key = 'secret'
+CORS(app)
 
 # URL do banco de dados do firebase
 url = "https://appweb-orion-php-default-rtdb.firebaseio.com/members.json"
 
-# ======================== session user ==============================================================================
-
-# login session 
+# login session
 @app.route("/", methods=["POST", "GET"])
 def login():
+    '''função para verificação de login'''
     if('user' in session):
         return redirect(url_for('read'))
 
@@ -55,7 +29,6 @@ def login():
         password = request.form.get("password")
 
         try:
-
             user = auth.sign_in_with_email_and_password(email, password)
             session['user'] = email
             return redirect(url_for('read'))
@@ -80,15 +53,13 @@ def logout():
     # check_session()
     return redirect(url_for('login'))
 
-#============================ Funções de configuração ===========================================================================================
-
 # gerar id automaticamente
 def generate_id():
     characters = string.ascii_uppercase + string.digits
     id = ''.join(random.choices(characters, k=16))
     return id
 
-# verificar se o id gerado já existe
+# Verificar se o id gerado já existe
 def check_id_exists(id):
     # Fazer a solicitação GET para obter os daods do nó "members"
     response = requests.get(f'{url}/members.json')
