@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box
+}
+
+html{
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;
+    height: 100%;
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+}
+
+#form-signin{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#form-signin > form{
+    display: flexbox;
+    align-items: center;
+    justify-content: center;
+}
+
+#form-signin > form > img{
+    margin-bottom: 2rem;
+    width: 180px;
+    height: 180px
+}
+
+#form-signin > form h1{
+    margin-bottom: 2rem;
+}
+
+#form-signin > form h1 > span{
+    font-weight: 300; 
+    color:darkslategray;
+}
+
+#form-signin > form input{
+    padding: .5rem;
+    width: 16rem;
+    height: 2rem;
+    margin-bottom: 1rem;
+    border: 1px solid #3a3a3a;
+    border-radius: .5rem;
+    background-color: rgb(218, 218, 218);
+    font-size: 1rem;
+    font-weight: 700;
+}
+#form-signin > form input, #form-signin > form button{
+    width: 300px;
+    height: 48px;
+}
+#form-signin > form button{
+    
+    background-color: rgb(74, 74, 222);
+    border-radius: .5rem;
+    border: none;
+    
+    color: #fff;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+/* Seção de Container*/
+.container{
+    flex: 1;
+    padding: 5rem 7.5rem;
+    text-align: center;
+}
+
+ 

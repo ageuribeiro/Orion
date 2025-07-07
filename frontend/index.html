@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="./static/img/logo_ad.png" type="image/x-icon">
+  <link rel="stylesheet" href="./static/css/style.css" type="text/css" media="all">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" media="all">
+  <title>Aplicativo Orion</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <section id="form-signin" class="w-100 m-auto">
+      <form id="loginForm">
+        <img src="./static/img/logo_ad.png" alt="logo_ad">
+        <h1 class="h1">
+          App Orion <span>Web</span>
+        </h1>
+        <div>
+          <input type="email" class="form-control" id="email" name="email" placeholder="Digite seu email"
+            required="required">
+        </div>
+        <div class="form-floating">
+          <input type="password" class="form-control" id="senha" name="senha" placeholder=" Digite sua senha"
+            required="required">
+        </div>
+        <button class="btn" type="submit" id="acessarSistema">Acessar</button>
+      </form>
+      <div id="resultado"></div>
+    </section>
+  </div>
+  <script src="./static/js/script.js"></script>
+  <script>
+    $('#loginForm').submit(function(e) {
+      e.preventDefault();
+
+      const email = $('#email').val();
+      const senha = $('#senha').val();
+
+      $.ajax({
+        url: 'http://localhost:5000/api/login',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ email: email, senha: senha }),
+        success: function(resposta) {
+            alert("Login realizado com sucesso!");
+            console.log("Enviando:", {email, senha})
+        },
+        error: function() {
+          try{
+            const json = JSON.parse(xhr.responseText);
+            alert("Erro: " + json.message);
+          } catch(e){
+            alert("Erro inesperado");
+          }
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>
