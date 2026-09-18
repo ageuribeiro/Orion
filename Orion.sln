@@ -1,8 +1,15 @@
-﻿Microsoft Visual Studio Solution File, Format Version 12.00
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orion", "Orion.csproj", "{72DF3719-F1A9-448B-B3E1-816169D25497}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrionUI", "OrionUI.csproj", "{72DF3719-F1A9-448B-B3E1-816169D25497}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orion.Agent.Worker", "..\Orion.Boss\Orion.Agent.Worker.csproj", "{84D9FB99-EB22-45B8-97F1-B50640748E84}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orion.Orchestrator", "..\Orchestrator\Orion.Orchestrator.csproj", "{55ECCEDA-28F2-48D3-B75A-DBFEAB0D76C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orion.Core", "..\Orion.Core\Orion.Core.csproj", "{7CE1CCC2-8DF8-41BC-A8A7-18BECC50AA58}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -14,8 +21,23 @@ Global
 		{72DF3719-F1A9-448B-B3E1-816169D25497}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72DF3719-F1A9-448B-B3E1-816169D25497}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72DF3719-F1A9-448B-B3E1-816169D25497}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84D9FB99-EB22-45B8-97F1-B50640748E84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84D9FB99-EB22-45B8-97F1-B50640748E84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84D9FB99-EB22-45B8-97F1-B50640748E84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84D9FB99-EB22-45B8-97F1-B50640748E84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55ECCEDA-28F2-48D3-B75A-DBFEAB0D76C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55ECCEDA-28F2-48D3-B75A-DBFEAB0D76C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55ECCEDA-28F2-48D3-B75A-DBFEAB0D76C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55ECCEDA-28F2-48D3-B75A-DBFEAB0D76C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CE1CCC2-8DF8-41BC-A8A7-18BECC50AA58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CE1CCC2-8DF8-41BC-A8A7-18BECC50AA58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CE1CCC2-8DF8-41BC-A8A7-18BECC50AA58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CE1CCC2-8DF8-41BC-A8A7-18BECC50AA58}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1A2EE3DC-67DE-446B-B38E-DE1F99EC5F30}
 	EndGlobalSection
 EndGlobal
