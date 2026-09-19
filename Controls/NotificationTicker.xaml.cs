@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,20 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Orion.Controllers;
-using Orion.ViewModels;
 
-namespace Orion.Views
+namespace Orion.Controls
 {
     /// <summary>
-    /// Interaction logic for UsuarioBuscar.xaml
+    /// Interaction logic for NotificationTicker.xaml
     /// </summary>
-    public partial class UsuarioBuscar : Page
+    public partial class NotificationTicker : UserControl
     {
-        public UsuarioBuscar()
+        public NotificationTicker()
         {
             InitializeComponent();
-            DataContext = new UsuarioViewModel();
         }
     }
 }

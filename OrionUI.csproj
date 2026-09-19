@@ -8,8 +8,16 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="Assets\splash_screen_landscape_450x300.png" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <ProjectReference Include="..\Orchestrator\Orion.Orchestrator.csproj" />
 	  <ProjectReference Include="..\Orion.Core\Orion.Core.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Resource Include="Assets\splash_screen_landscape_450x300.png" />
 	</ItemGroup>
 
 </Project>

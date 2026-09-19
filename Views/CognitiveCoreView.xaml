@@ -1,0 +1,51 @@
+<UserControl x:Class="Orion.Views.CognitiveCoreView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Orion.Views"
+             Background="Transparent"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+  <UserControl.Resources>
+    <Storyboard x:Key="CorePulse" RepeatBehavior="Forever" AutoReverse="True">
+      <DoubleAnimation Storyboard.TargetName="CoreHalo" Storyboard.TargetProperty="Opacity" From="0.35" To="0.90" Duration="0:0:2.5" />
+      <DoubleAnimation Storyboard.TargetName="CoreBorder" Storyboard.TargetProperty="Opacity" From="0.60" To="1" Duration="0:0:2.5" />
+    </Storyboard>
+  </UserControl.Resources>
+    <Grid>
+    <Grid x:Name="OrionCore" Width="180" Height="180" HorizontalAlignment="Center" VerticalAlignment="Center">
+      <Ellipse x:Name="CoreHalo" Width="180" Height="180">
+        <Ellipse.Fill>
+          <RadialGradientBrush>
+            <GradientStop Color="#704E8EA2" Offset="0" />
+            <GradientStop Color="#204E8EA2" Offset="0.60" />
+            <GradientStop Color="#004E8EA2" Offset="1" />
+          </RadialGradientBrush>
+        </Ellipse.Fill>
+      </Ellipse>
+      <Ellipse x:Name="OuterRing" Width="142" Height="142" Stroke="#4E8EA2" StrokeThickness="1" Opacity="0.70" />
+      <Ellipse x:Name="InnerRing" Width="132" Height="132" Stroke="#804E8EA2" StrokeThickness="2.5" />
+      <Ellipse Width="122" Height="122">
+        <Ellipse.Fill>
+          <RadialGradientBrush>
+            <GradientStop Color="#304E8EA2" Offset="0" />
+            <GradientStop Color="#E0001D39" Offset="0.62" />
+            <GradientStop Color="#FF001020" Offset="1" />
+          </RadialGradientBrush>
+        </Ellipse.Fill>
+      </Ellipse>
+      <Ellipse x:Name="CoreBorder" Width="116" Height="116" Stroke="#80DFFB" StrokeThickness="2">
+        <Ellipse.Effect>
+          <DropShadowEffect Color="#4E8EA2" BlurRadius="20" ShadowDepth="0" Opacity="0.90" />
+        </Ellipse.Effect>
+      </Ellipse>
+      <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+        <TextBlock Text="ORION" Foreground="#F0FCFF" FontSize="22" FontWeight="Light" HorizontalAlignment="Center" />
+        <Rectangle Height="1" Width="62" Fill="#4E8EA2" Margin="0,7" />
+        <TextBlock Text="NÚCLEO" Foreground="#80DFFB" FontSize="9" HorizontalAlignment="Center" />
+        <TextBlock Text="COGNITIVO" Foreground="#80DFFB" FontSize="9" Margin="0,2,0,0" HorizontalAlignment="Center" />
+      </StackPanel>
+    </Grid>
+  </Grid>
+</UserControl>
